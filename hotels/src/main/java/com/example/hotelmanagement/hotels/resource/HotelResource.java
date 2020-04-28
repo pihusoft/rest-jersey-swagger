@@ -1,5 +1,6 @@
 package com.example.hotelmanagement.hotels.resource;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.BeanParam;
@@ -13,7 +14,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 import com.example.hotelmanagement.hotels.model.Hotel;
 import com.example.hotelmanagement.hotels.service.HotelService;
@@ -31,16 +37,19 @@ public class HotelResource {
 //	    }
 		
 	   	@GET
-	    public List<Hotel> getAll(@QueryParam("price") int price,@QueryParam("country") String country) {
-	   		
+	    public Response getAll(@QueryParam("price") int price,@QueryParam("country") String country) {
+	   		GenericEntity<List<Hotel>> list;
 	   		if(price > 0 && country==null) {
-	   			return hotelService.getAllHotelsByPrice(price);
+	   			list = new GenericEntity<List<Hotel>>(hotelService.getAllHotelsByPrice(price)) {};
+	   			return Response.ok().entity(list).build();
 	   		}
 	   		else if(price > 0 && country!=null) {
-	   			return hotelService.getAllHotelsOfCountryByPrice(country, price);
+	   			list = new GenericEntity<List<Hotel>>(hotelService.getAllHotelsOfCountryByPrice(country, price)) {};
+	   			return Response.ok(list).build();
 	   		}
 	   		
-	        return hotelService.getAllHotels();
+	   		list = new GenericEntity<List<Hotel>>(hotelService.getAllHotels()) {};
+	        return Response.status(Status.OK).entity(list).build();
 	    }
 		
 //	   	@GET
@@ -51,31 +60,38 @@ public class HotelResource {
 	   	
 	   	@GET
 	   	@Path("country/{countryId}")
-	   	public List<Hotel> recommendedHotels(@BeanParam HotelFilterBean hotelFilterBean){
-	   		return hotelService.recommendedHotels(hotelFilterBean.getCountry(),hotelFilterBean.getPrice(),hotelFilterBean.getRatings());
+	   	public Response recommendedHotels(@BeanParam HotelFilterBean hotelFilterBean){
+	   		GenericEntity<List<Hotel>> list = 
+	   				new GenericEntity<List<Hotel>>(hotelService.recommendedHotels(hotelFilterBean.getCountry(),hotelFilterBean.getPrice(),hotelFilterBean.getRatings())) {};
+	   		return Response.ok(list).build();
 	   	}
 	   	
 	   	@GET
 	   	@Path("/{hotelId}") 
-	   	public Hotel getHotel(@PathParam("hotelId") String id) {
-	   		return hotelService.getHotelById(id);
+	   	public Response getHotel(@PathParam("hotelId") String id) {
+	   		return Response.ok(hotelService.getHotelById(id)).build();
 	   	}
 	   	
 	   	@POST
-	   	public Hotel add(Hotel hotel) {
-	   		return hotelService.addHotel(hotel);
+	   	public Response add(Hotel hotel, @Context UriInfo uriInfo) {
+	   		Hotel hotelEntity = hotelService.addHotel(hotel);
+	   		URI uri = uriInfo.getAbsolutePathBuilder().path(hotelEntity.getId()).build();
+	   		return Response.created(uri)
+	   				.entity(hotelEntity)
+	   				.build();
 	   	}
 	   	
 	   	@PUT
 	   	@Path("/{hotelId}")
-	   	public Hotel update(@PathParam("hotelId") String id, Hotel hotel) {
+	   	public Response update(@PathParam("hotelId") String id, Hotel hotel) {
 	   		hotel.setId(id);
-	   		return hotelService.updateHotel(hotel);
+	   		return Response.status(Status.CREATED).entity(hotelService.updateHotel(hotel)).build();
 	   	}
 	   	
 	   	@DELETE
 	   	@Path("/{hotelId}")
-	   	public void deleteHotel(@PathParam("hotelId") String id) {
-	   		hotelService.deleteHotel(id);	   		
+	   	public Response deleteHotel(@PathParam("hotelId") String id) {
+	   		hotelService.deleteHotel(id);	   
+	   		return Response.noContent().build();
 	   	}
 }
