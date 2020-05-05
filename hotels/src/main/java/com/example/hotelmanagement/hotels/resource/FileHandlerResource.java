@@ -27,7 +27,7 @@ public class FileHandlerResource {
     public Response uploadFile(  
             @FormDataParam("file") InputStream inputStream,  
             @FormDataParam("file") FormDataContentDisposition fileDetail) {  
-            String fileLocation = "C:\\Users\\akhan318\\eclipse-workspace\\HotelManagement\\" + fileDetail.getFileName();  
+            String fileLocation = "C:\\" + fileDetail.getFileName();  
      
             fileHandlerService.uploadFile(inputStream,fileLocation);
             String output = "File successfully uploaded to : " + fileLocation;  
@@ -39,7 +39,7 @@ public class FileHandlerResource {
     @Path("download/pdf")
     @Produces("application/pdf")
     public Response downloadPdfFile() {  
-        String FILE_PATH = "C:\\Users\\akhan318\\eclipse-workspace\\HotelManagement\\ASSIGNMENT.pdf";  
+        String FILE_PATH = "C:\\ASSIGNMENT.pdf";  
         File file = new File(FILE_PATH);  
         
         return Response.ok((Object)file)
@@ -52,17 +52,17 @@ public class FileHandlerResource {
     @Produces("text/csv")
     //@Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response downloadCSVFile() {  
-        String FILE_PATH = "C:\\Users\\akhan318\\eclipse-workspace\\HotelManagement\\SICS_ WBS Code_06th Feb 2020.xls";  
+        String FILE_PATH = "C:\\dummy.xls";  
         File file = new File(FILE_PATH);  
         
-        return Response.ok((Object)file).header("Content-Disposition","attachment; filename=\"SICS_ WBS Code_06th Feb 2020.xls\"").build();
+        return Response.ok((Object)file).header("Content-Disposition","attachment; filename=\"dummy.xls\"").build();
     }  
     
     @GET
     @Path("download/image")
     @Produces("image/png")
     public Response downloadImageFile() {  
-        String FILE_PATH = "C:\\Users\\akhan318\\eclipse-workspace\\HotelManagement\\Image.png";  
+        String FILE_PATH = "C:\\Image.png";  
         File file = new File(FILE_PATH);  
         
         return Response.ok((Object)file)
