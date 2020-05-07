@@ -65,6 +65,14 @@ public class Hotel {
 	public void setReviews(List<Review> reviews) {
 		this.reviews = reviews;
 	}
+
+	@Override
+	public String toString() {
+		return "Hotel [id=" + id + ", name=" + name + ", pricePerNight=" + pricePerNight + ", address=" + address
+				+ ", reviews=" + reviews + "]";
+	}
+	
+	
 	
 	
 }

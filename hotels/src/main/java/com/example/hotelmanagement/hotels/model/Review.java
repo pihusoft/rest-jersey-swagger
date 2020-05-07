@@ -34,6 +34,10 @@ public class Review {
 	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}
+	@Override
+	public String toString() {
+		return "Review [userName=" + userName + ", ratings=" + ratings + ", approved=" + approved + "]";
+	}
 	
 	
 }
