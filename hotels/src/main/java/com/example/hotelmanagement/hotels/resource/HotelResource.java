@@ -24,9 +24,15 @@ import javax.ws.rs.core.UriInfo;
 import com.example.hotelmanagement.hotels.model.Hotel;
 import com.example.hotelmanagement.hotels.service.HotelService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 @Path("/hotels")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Api ("/Hotel Service")
+@SwaggerDefinition(tags = {@Tag(name = "Hotel Service", description = "RestEndpoint for the product service")})
 public class HotelResource {
 	
 		HotelService hotelService = HotelService.getHotelService();

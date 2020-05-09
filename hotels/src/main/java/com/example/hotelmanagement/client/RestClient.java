@@ -24,22 +24,23 @@ public class RestClient {
 		//Rest request for getting all the hotels 
 		System.out.println("Rest request for getting all the hotels filter by price\n");
 		Client client = ClientBuilder.newClient();
-	    WebTarget target = client.target("http://localhost:8670/hotels/webapi/hotels/");
+	    WebTarget target = client.target("http://localhost:8999/hotels/webapi/hotels/");
 	    
 	    Builder builder = target.request(MediaType.APPLICATION_JSON);
 	    Response response = builder.get();
 		List<Hotel> hotels = response.readEntity(List.class); 
-	    System.out.println(hotels.get(2));
+	   // System.out.println(hotels.get(2));
 	    
 	    System.out.println("\n*************************\n");
 	    /*Rest request for getting all the hotels filter by price 
 	     */    
 	    
-	    Response response2 = target.queryParam("price", 100)
-	    		.request(MediaType.APPLICATION_JSON)
-	    		.get();
+		/*
+		 * Response response2 = target.queryParam("price", 100)
+		 * .request(MediaType.APPLICATION_JSON) .get();
+		 */
 	    System.out.println("Rest request for getting all the hotels filter by price\n");
-	    System.out.println(response2.readEntity(List.class).get(0));
+	   // System.out.println(response2.readEntity(List.class).get(0));
 	    
 	    
 	    System.out.println("\n*************************\n");
