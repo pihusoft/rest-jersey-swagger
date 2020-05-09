@@ -1,6 +1,6 @@
 FROM tomcat:9.0
 
-MAINTAINER "AAMIR"
+MAINTAINER "Amit Kumar"
 
 EXPOSE 8080
 
